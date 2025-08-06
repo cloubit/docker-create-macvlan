@@ -32,12 +32,11 @@ while true;
         docker network create --driver $DRIVER --subnet $SUBNET --gateway $GATEWAY --ip-range=$IPRANGE --opt parent=$ADAPTER $NETWORKNAME
         sleep 3
         # Check if Docker macvlan was created.
-        docker network inspect $NETWORKNAME | grep -i "$NETWORKNAME" 
-        if [ $? -eq 0 ]; 
-        then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') $NETWORKNAME was created." >> $NETWORKNAME.log
+        if docker network inspect $NETWORKNAME | grep -i "$NETWORKNAME" 
+            then
+            echo "$(date '+%Y-%m-%d %H:%M:%S') $NETWORKNAME was created." >> $NETWORKNAME.log
         else
-        echo "$(date '+%Y-%m-%d %H:%M:%S') $NETWORKNAME was created." >> $NETWORKNAME.log
+            echo "$(date '+%Y-%m-%d %H:%M:%S') $NETWORKNAME was created." >> $NETWORKNAME.log
         fi
     fi
     # Check is promiscuous mode active.
@@ -49,5 +48,5 @@ while true;
         echo "$(date '+%Y-%m-%d %H:%M:%S') Promiscuous mode on adapter $ADAPTER was configured." >> $NETWORKNAME.log
     fi
     echo "$(date '+%Y-%m-%d %H:%M:%S') Script run successfully. Check output before." >> $NETWORKNAME.log
-    sleep 30 
+    sleep 120 
 done
