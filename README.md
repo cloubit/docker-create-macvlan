@@ -3,8 +3,8 @@ Shell script that creates a Docker MacVlan and checks the functionality of the c
 
 ## Installation instructions
 1. Copy the script "activate-macvlan.sh” to your Docker host.
-2. In the script, adjust the variables `DOCKERPATH`, SUBNET`, `IPRANGE`, `GATEWAY`, `ADAPTER` and `NETWORKNAME` to your Docker environment.
-3. Make the file executable with m̀od +x activate-macvlan.sh`.
+2. In the script, adjust the variables `DOCKERPATH`, `SUBNET`, `IPRANGE`, `GATEWAY`, `ADAPTER` and `NETWORKNAME` to your Docker environment.
+3. Make the file executable with `sudo chm̀od +x activate-macvlan.sh`.
 4. Führte das Script mit `sudo sh activate-macvlan.sh` aus.
 
 ## Further interesting information
