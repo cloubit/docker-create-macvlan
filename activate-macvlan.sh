@@ -12,11 +12,6 @@ ADAPTER=my-lan-adapter
 NETWORKNAME=my-macvlan-name
 macvlan_mode=bridge
 
-# Define host addresses:
-HOST1="10.10.10.129"
-HOST2="10.10.10.130"
-
-
 echo "$(date '+%Y-%m-%d %H:%M:%S') $NETWORKNAME Script started successfully" >> $NETWORKNAME.log
 
 while true;
@@ -27,10 +22,9 @@ while true;
             echo "$(date '+%Y-%m-%d %H:%M:%S') Docker is inactiv." >> $NETWORKNAME.log
             sleep 5
     done
-        echo "$(date '+%Y-%m-%d %H:%M:%S') Docker is activ." >> $NETWORKNAME.log
-        # Check if Docker MacVlan available.
-        docker network inspect $NETWORKNAME | grep -i "$NETWORKNAME" 
-    if [ $? -eq 0 ]; 
+        echo "$(date '+%Y-%m-%d %H:%M:%S') Docker is activ." > /dev/null
+    # Check if Docker MacVlan available.
+    if docker network inspect $NETWORKNAME | grep -i "$NETWORKNAME" 
         then
         echo "$(date '+%Y-%m-%d %H:%M:%S') $NETWORKNAME is activ." > /dev/null
     else
@@ -46,19 +40,13 @@ while true;
         echo "$(date '+%Y-%m-%d %H:%M:%S') $NETWORKNAME was created." >> $NETWORKNAME.log
         fi
     fi
-    # Check is Host reachable.
-    if ping -c 1 -W 1 $HOST1 > /dev/null 2>&1; 
+    # Check is promiscuous mode active.
+    if ip a | grep -i "$ADAPTER.*PROMISC"
         then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') Host $HOST1 reachable." > /dev/null
+        echo "$(date '+%Y-%m-%d %H:%M:%S') Promiscuous mode on adapter $ADAPTER is active." > /dev/null
     else
-        # Configure Docker MacVlan.
-        ip link add $NETWORKNAME link $ADAPTER type $DRIVER mode bridge
-        ip addr add $HOST1/32 dev $NETWORKNAME
-        ip addr add $HOST2/32 dev $NETWORKNAME
-        ip link set $NETWORKNAME up
-        ip route add $IPRANGE dev $NETWORKNAME
-        echo "$(date '+%Y-%m-%d %H:%M:%S') $NETWORKNAME was configured with Host $HOST1, $HOST2." >> $NETWORKNAME.log
-        sleep 5
+        ip link set $ADAPTER promisc on
+        echo "$(date '+%Y-%m-%d %H:%M:%S') Promiscuous mode on adapter $ADAPTER was configured." >> $NETWORKNAME.log
     fi
     echo "$(date '+%Y-%m-%d %H:%M:%S') Script run successfully. Check output before." >> $NETWORKNAME.log
     sleep 30 
