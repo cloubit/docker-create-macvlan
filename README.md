@@ -8,7 +8,6 @@ Shell script that creates a Docker MacVlan and checks the functionality of the c
 4. Führte das Script mit `sudo sh activate-macvlan.sh` aus.
 
 ## Further interesting information
-After installation, the script periodically checks the Docker macvlan and the promiscuous mode.
 Check the log file and interrupt it with `ctrl c` if required.
 
 **Attention:** promiscuous mode must be executed again after each restart.
